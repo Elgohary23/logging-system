@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>User Profile</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .profile-container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 300px;
+                text-align: center;
+            }
+            .profile-container h2 {
+                margin-bottom: 20px;
+            }
+            .profile-container p {
+                margin: 10px 0;
+            }
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #4caf50;
+                padding: 10px 20px;
+                width: 100%;
+                position: absolute;
+                top: 0;
+            }
+            .navbar a {
+                color: white;
+                text-decoration: none;
+                padding: 10px 20px;
+                font-weight: 700;
+            }
+            .navbar a:hover {
+                background-color: #45a049;
+                border-radius: 5px;
+            }
+            .logout-btn {
+                margin-top: 20px;
+                padding: 10px 20px;
+                background-color: #f44336;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .logout-btn:hover {
+                background-color: #e53935;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="logo">To-Do List App</div>
+            <div>
+                <a href="/sign-up.html">Sign Up</a>
+                <a href="/login.html">Sign In</a>
+            </div>
+        </div>
+        <div class="profile-container">
+            <h2>User Profile</h2>
+            <p id="username"></p>
+            <p id="email"></p>
+            <button class="logout-btn" onclick="logout()">Log Out</button>
+        </div>
+
+        <script>
+            const cookie = document.cookie;
+            console.log(cookie);
+            if (!cookie.includes("authKey")) {
+                window.location.href = "/login.html";
+            }
+
+            const userData = JSON.parse(localStorage.getItem("userData")) || [];
+            const authKey = cookie.split("=")[1];
+            const user = userData.find((user) => `user_${user.username}_key` === authKey);
+
+            if (user) {
+                document.getElementById("username").textContent = `Username: ${user.username}`;
+                document.getElementById("email").textContent = `Email: ${user.email}`;
+            } else {
+                alert("User not found");
+                window.location.href = "/login.html";
+            }
+
+            function logout() {
+                document.cookie = "authKey=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = "/login.html";
+            }
+        </script>
+    </body>
+</html>
